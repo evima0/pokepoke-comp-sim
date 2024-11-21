@@ -302,7 +302,9 @@ if __name__ == "__main__":
         with open(POKE_EN2JA_JSON, "r") as f:
             poke_en2ja = json.load(f)
     except FileNotFoundError:
-        print('Download "poke-en2ja.json" from ...')
+        print(
+            'Download "poke-en2ja.json" from https://github.com/evima0/pokepoke-comp-sim/blob/main/poke-en2ja.json'
+        )
         exit(1)
     read_csv()
     assert len(kanto) == 150 + 1 and num_dia == 226 and len(name) == 286 + 1
