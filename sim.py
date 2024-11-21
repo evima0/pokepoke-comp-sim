@@ -324,7 +324,8 @@ if __name__ == "__main__":
     with open("{}-{}-{}.txt".format(mode, num_trials, datedigits()), "w") as f:
         for t, c in sorted(Counter(results).items()):
             f.write(f"{t}: {c}\n")
-        f.write("Average: {:.1f}\n".format(sum(results) / num_trials))
+        average = sum(results) / num_trials
+        f.write("Average: {:.1f}\n".format(average))
         f.write(f"Min: {min(results)}\n")
         f.write(
             f"Median: {sorted(results)[(num_trials + 1) // 2 if num_trials >= 2 else 0]}\n"
@@ -335,11 +336,7 @@ if __name__ == "__main__":
         f.write(f"Max: {max(results)}\n")
         f.write(
             "SD: {:.1f}\n".format(
-                (
-                    sum((x - sum(results) / num_trials) ** 2 for x in results)
-                    / num_trials
-                )
-                ** 0.5
+                (sum((x - average) ** 2 for x in results) / num_trials) ** 0.5
             )
         )
         f.write("Time: {:.3f} seconds\n".format(end_time - start_time))
