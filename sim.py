@@ -321,22 +321,28 @@ if __name__ == "__main__":
         results = pool.starmap(simulate, [(i, mode) for i in range(num_trials)])
         end_time = time.time()
 
-    for t, c in sorted(Counter(results).items()):
-        print("{}: {}".format(t, c))
-    print("Average: {}".format(sum(results) / num_trials))
-    print("Min: {}".format(min(results)))
-    print(f"Median: {sorted(results)[(num_trials + 1) // 2 if num_trials >= 2 else 0]}")
-    print(
-        f"95%: {sorted(results)[(num_trials * 19 + 19) // 20 if num_trials >= 20 else -1]}"
-    )
-    print("Max: {}".format(max(results)))
-    print(
-        "SD: {:.3}".format(
-            (sum((x - sum(results) / num_trials) ** 2 for x in results) / num_trials)
-            ** 0.5
+    with open("{}-{}-{}.txt".format(mode, num_trials, datedigits()), "w") as f:
+        for t, c in sorted(Counter(results).items()):
+            f.write(f"{t}: {c}\n")
+        f.write("Average: {:.1f}\n".format(sum(results) / num_trials))
+        f.write(f"Min: {min(results)}\n")
+        f.write(
+            f"Median: {sorted(results)[(num_trials + 1) // 2 if num_trials >= 2 else 0]}\n"
         )
-    )
-    print("Time: {:.3} seconds".format(end_time - start_time))
+        f.write(
+            f"95%: {sorted(results)[(num_trials * 19 + 19) // 20 if num_trials >= 20 else -1]}\n"
+        )
+        f.write(f"Max: {max(results)}\n")
+        f.write(
+            "SD: {:.1f}\n".format(
+                (
+                    sum((x - sum(results) / num_trials) ** 2 for x in results)
+                    / num_trials
+                )
+                ** 0.5
+            )
+        )
+        f.write("Time: {:.3f} seconds\n".format(end_time - start_time))
     plt.figure(figsize=(10, 6))
     plt.hist(
         results,
