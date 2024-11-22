@@ -166,8 +166,7 @@ def simulate(task_id, mode):
         else num_dia + 1 if mode[:3] == "dia" else len(name)
     )
     remaining = {i: num_req for i in range(1, len(own))}
-    if 283 in remaining:  # ミュウ
-        remaining.pop(283)
+    remaining.pop(283, None)  # ミュウ
     points = 0
     points_needed = num_req * (
         sum(bestprice_kanto[1:])
