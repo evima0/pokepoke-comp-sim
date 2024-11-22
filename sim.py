@@ -327,12 +327,8 @@ if __name__ == "__main__":
         average = sum(results) / num_trials
         f.write("Average: {:.1f}\n".format(average))
         f.write(f"Min: {min(results)}\n")
-        f.write(
-            f"Median: {sorted(results)[(num_trials + 1) // 2 if num_trials >= 2 else 0]}\n"
-        )
-        f.write(
-            f"95%: {sorted(results)[(num_trials * 19 + 19) // 20 if num_trials >= 20 else -1]}\n"
-        )
+        f.write(f"Median: {sorted(results)[num_trials // 2]}\n")
+        f.write(f"95%: {sorted(results)[num_trials * 19 // 20]}\n")
         f.write(f"Max: {max(results)}\n")
         f.write(
             "SD: {:.1f}\n".format(
