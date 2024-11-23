@@ -60,10 +60,6 @@ init_exp_dia = [-INF, 0, 0, 0]
 init_exp_all = [-INF, 0, 0, 0]
 
 
-def datedigits():
-    return time.strftime("%Y%m%d%H%M%S")
-
-
 def percent2int(s):
     return round(float(s[:-1]) * 1000) if s else 0
 
@@ -297,6 +293,7 @@ def simulate(task_id, mode):
 
 
 if __name__ == "__main__":
+    timestamp = time.strftime("%Y%m%d%H%M%S")
     try:
         with open(POKE_EN2JA_JSON, "r") as f:
             poke_en2ja = json.load(f)
@@ -320,7 +317,7 @@ if __name__ == "__main__":
         results = pool.starmap(simulate, [(i, mode) for i in range(num_trials)])
         end_time = time.time()
 
-    with open("{}-{}-{}.txt".format(mode, num_trials, datedigits()), "w") as f:
+    with open("{}-{}-{}.txt".format(mode, num_trials, timestamp), "w") as f:
         for t, c in sorted(Counter(results).items()):
             f.write(f"{t}: {c}\n")
         average = sum(results) / num_trials
@@ -343,4 +340,4 @@ if __name__ == "__main__":
         alpha=0.7,
     )
     plt.grid(axis="y", alpha=0.75)
-    plt.savefig("{}-{}-{}.png".format(mode, num_trials, datedigits()))
+    plt.savefig("{}-{}-{}.png".format(mode, num_trials, timestamp))
